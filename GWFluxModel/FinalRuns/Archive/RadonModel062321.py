@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sat Jun  4 20:16:35 2022
+Created on Sat Jun  4 19:57:04 2022
 
 @author: keirajohnson
 """
 
-##for 07-14-2021##
+
+##for 06-23-2021##
 
 from StreamTran import *
 
@@ -32,6 +33,9 @@ import matplotlib as mpl
 
 import pickle as p
 
+import os as os
+
+import pandas as ps
 
 
 
@@ -55,12 +59,17 @@ run_tran = 1 #estimate groundwater discharge
 
 calc_age = 0 #estimate groundwater age
 
+# os.chdir(path="/Users/johnkeir/Box/Keira_Johnson/Coal_Creek/Summer")
 
+# MC_runs=ps.read_csv("MC_10_df.csv")
 
+# print(Rn_list)
 
+# MC_runs_date=MC_runs[MC_runs.date=="MC_output_all_0623.csv"]
 
+# Rn_list=MC_runs_date.Radon
 
-
+# Gas_list=MC_runs_date.Gas
 
 
 
@@ -165,7 +174,7 @@ E_gw = 3030. #mean sampling elevation for now in meters
 
 xd = np.array([0.,2324.,2848.])  #distance downstream in m
 
-yd = np.array([0.08,0.14,0.26]) #discharge in cms
+yd = np.array([0.08,0.15,0.28]) #discharge in cms
 
 DischData=(xd,yd)
 
@@ -211,7 +220,7 @@ error_perc = 0.014 #Average uncertainty as a standard error - stdev/mean in pC/L
 
 xd = np.array([0., 161., 801., 1537., 2324., 2848.]) #distance down stream
 
-yd = np.array([3.1,2.7, 3.4, 4.2, 1.5, 6.7]) #concentration in pC/L
+yd = np.array([3.5,3.8, 5.1, 5.5, 2.3, 4.3]) #concentration in pC/L
 
 FieldData[tracer]=(xd,yd)
 
@@ -221,7 +230,7 @@ FieldData[tracer]=(xd,yd)
 
 xd = np.array([581.]) #approximate distance along the downstream direction
 
-yd = np.array([100.]) #groundwater concentration from Meadow Spring
+yd = np.array([125.5]) #groundwater concentration from Meadow Spring
 
 C_gw = (xd,yd)
 
@@ -275,7 +284,7 @@ error_perc = 0.05 #unknown for Cl
 
 xd = np.array([0., 161., 801., 1537., 2324., 2848.]) #distance down stream
 
-yd = np.array([58.44, 55.33, 49.48, 45.04, 44.71, 98.93]) #UM
+yd = np.array([63.66, 63.88, 56.62, 51.48, 50.13, 108.41 ]) #UM
 
 FieldData[tracer]=(xd,yd)
 
@@ -342,7 +351,7 @@ error_perc = 0.1 #unknown for Cl
 
 xd = np.array([0., 161., 801., 1537., 2324., 2848.]) #distance down stream
 
-yd = np.array([-16.15, -16.41, -16.22, -16.08, -16.08, -16.05]) #UM
+yd = np.array([-16.5, -16.48, -16.43, -16.36, -16.34, -16.47]) #UM
 
 FieldData[tracer]=(xd,yd)
 
@@ -407,7 +416,7 @@ error_perc = 0.05 #unknown for Cl
 
 xd = np.array([0., 161., 801., 1537., 2324., 2848.]) #distance down stream
 
-yd = np.array([8.56, 7.98, 7.87, 7.72, 7.71, 9.82]) #UM
+yd = np.array([9.09, 9.08, 8.51, 8.19, 8.33, 10.43]) #UM
 
 FieldData[tracer]=(xd,yd)
 
@@ -471,7 +480,7 @@ error_perc = 0.05 #unknown for Cl
 
 xd = np.array([0., 161., 801., 1537., 2324., 2848.]) #distance down stream
 
-yd = np.array([1.43, 1.34, 1.36, 1.41, 1.50, 1.61]) #UM
+yd = np.array([1.43, 1.42, 1.39, 1.44, 1.52, 1.67]) #UM
 
 FieldData[tracer]=(xd,yd)
 
@@ -535,7 +544,7 @@ error_perc = 0.05 #unknown for Cl
 
 xd = np.array([0., 161., 801., 1537., 2324., 2848.]) #distance down stream
 
-yd = np.array([2.52, 2.17, 2.83, 2.42, 2.37, 2.92]) #UM
+yd = np.array([1.98, 2.04, 2.09, 2.21, 2.25, 3.08]) #UM
 
 FieldData[tracer]=(xd,yd)
 
@@ -579,7 +588,7 @@ L = 2848.  #Modeled Total Lengthm
 
 nx = int(1.e4)   #number of cells - can keep this constant for now
 
-Evap = 2e-3/60./60./24. #Evaporation Rate
+Evap = 5.2e-3/60./60./24. #Evaporation Rate (m/day converted to m/s)
 
 Q_us = 0.08 #measured
 
@@ -595,7 +604,7 @@ Q_us = 0.08 #measured
 
 xd = np.array([0.,2324.,2848.]) #distance downstream
 
-yd = np.array([1.87, 2.66, 3.12]) #average width
+yd = np.array([1.87, 2.81, 3.18]) #average width
 
 w = (xd,yd)
 
@@ -605,7 +614,7 @@ w = (xd,yd)
 
 xd = np.array([0.,2324.,2848.]) #distance downstream
 
-yd = np.array([0.19, 0.14, 0.32]) #average depth
+yd = np.array([0.19, 0.15, 0.34]) #average depth
 
 d = (xd,yd)  #([dist.]),([depths])
 
@@ -649,7 +658,7 @@ Sch_Rn = ng.schmidt('Rn',T)
 
 k_Rn = (Sch_Rn/600.)**-0.5*k600
 
-k_Rn = 49.
+k_Rn = 85.5
 
 #k_Rn = 3.85 #lower MCMC 95%
 
@@ -669,7 +678,7 @@ print('Rn Gas Exchange = ', sTran.Tracers['Rn'].k*60*60*24, ' m/d')
 
 #tributary (np.array([x]),[disch],{tracer:[C]})
 
-Q_trib = (np.array([2760.]),[0.04],{'Rn':[2.1],'SO4':[364.08],'d18O':[-16.54], 'Ca':[24.603], 'Na':[2.109], 'Si':[3.513]})
+Q_trib = (np.array([2760.]),[0.05],{'Rn':[2.1],'SO4':[364.08],'d18O':[-16.54], 'Ca':[24.603], 'Na':[2.109], 'Si':[3.513]})
 
 
 
@@ -805,12 +814,6 @@ x = np.linspace(0,L,num=nx)
 subplot(3,1,1)
 
 plot(x/1000.,sTran.SimRes.Q.value,'k',lw=2,alpha=0.6,label='modeled')
-plt.tick_params(
-    axis='x',          # changes apply to the x-axis
-    which='both',      # both major and minor ticks are affected
-    bottom=False,      # ticks along the bottom edge are off
-    top=False,         # ticks along the top edge are off
-    labelbottom=False)
 
 
 
@@ -837,12 +840,6 @@ error_perc = 0.15
 subplot(3,1,2)
 
 plot(x/1000.,sTran.SimRes.tracers[tracer].C.value,'k',alpha=0.6,lw=2,label='modeled')
-plt.tick_params(
-    axis='x',          # changes apply to the x-axis
-    which='both',      # both major and minor ticks are affected
-    bottom=False,      # ticks along the bottom edge are off
-    top=False,         # ticks along the top edge are off
-    labelbottom=False)
 
 ylabel("Rn (piC/L)")
 
@@ -895,7 +892,7 @@ grid(b=True,which='major',linestyle='--')
 
 #error_perc = 0.05
 
-#subplot(8,1,4)
+#subplot(4,1,3)
 
 #plot(x/1000.,sTran.SimRes.tracers[tracer].C.value,'k',alpha=0.6,lw=2,label='modeled')
 
@@ -1005,19 +1002,25 @@ grid(b=True,which='major',linestyle='--')
 
 xlabel('distance (km)')
 
-ylabel('groundwater flux (m/s)')
+ylabel('lateral discharge (m/s)')
 
 #tight_layout()
 
 fig1.set_size_inches(8,7)
 
-#fig1.savefig('PhysicalParamsFigure_071421_top5AICmed.png',dpi=200,bbox_inches='tight')
+fig1.savefig('PhysicalParamsFigure_062321_medMC_newEvap.png',dpi=200,bbox_inches='tight')
+
+
+
+
+
+
+
 
 
 
 
 ########################################################################
-
 
 
 final_data = None
@@ -1049,7 +1052,7 @@ with open('CoalCreekResults_v1.pkl', 'rb') as f:
     gwDischarge_keys, gwDischarge_data = (["GWDischarge"], [sTran.SimRes.q_lin.value])
     
     def export_to_csv(keys, data, name):
-        with open(f"{name}_exported_071421_lower95_top5AICmed.csv", "w+") as datafile:
+        with open(f"{name}_exported_062321_medMC_newEvap.csv", "w+") as datafile:
             datafile.write(",".join(keys) + '\n')
             numpy_stuff = np.asarray(data).T
             for row in numpy_stuff:

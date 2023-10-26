@@ -231,7 +231,7 @@ FieldData[tracer]=(xd,yd)
 
 xd = np.array([581.]) #approximate distance along the downstream direction
 
-yd = np.array([145.]) #groundwater concentration from Meadow Spring
+yd = np.array([100.]) #groundwater concentration from Meadow Spring
 
 C_gw = (xd,yd)
 
@@ -659,7 +659,7 @@ Sch_Rn = ng.schmidt('Rn',T)
 
 k_Rn = (Sch_Rn/600.)**-0.5*k600
 
-k_Rn = 94.5
+k_Rn = 51.
 
 #k_Rn = 3.85 #lower MCMC 95%
 
@@ -815,6 +815,12 @@ x = np.linspace(0,L,num=nx)
 subplot(3,1,1)
 
 plot(x/1000.,sTran.SimRes.Q.value,'k',lw=2,alpha=0.6,label='modeled')
+plt.tick_params(
+    axis='x',          # changes apply to the x-axis
+    which='both',      # both major and minor ticks are affected
+    bottom=False,      # ticks along the bottom edge are off
+    top=False,         # ticks along the top edge are off
+    labelbottom=False)
 
 
 
@@ -841,6 +847,12 @@ error_perc = 0.15
 subplot(3,1,2)
 
 plot(x/1000.,sTran.SimRes.tracers[tracer].C.value,'k',alpha=0.6,lw=2,label='modeled')
+plt.tick_params(
+    axis='x',          # changes apply to the x-axis
+    which='both',      # both major and minor ticks are affected
+    bottom=False,      # ticks along the bottom edge are off
+    top=False,         # ticks along the top edge are off
+    labelbottom=False)
 
 ylabel("Rn (piC/L)")
 
@@ -1003,13 +1015,13 @@ grid(b=True,which='major',linestyle='--')
 
 xlabel('distance (km)')
 
-ylabel('lateral discharge (m/s)')
+ylabel('groundwater flux (m/s)')
 
 #tight_layout()
 
 fig1.set_size_inches(8,7)
 
-fig1.savefig('PhysicalParamsFigure_062921_medMC_newEvap.png',dpi=200,bbox_inches='tight')
+#fig1.savefig('PhysicalParamsFigure_062921_top5AICmed.png',dpi=200,bbox_inches='tight')
 
 
 
@@ -1042,7 +1054,7 @@ with open('CoalCreekResults_v1.pkl', 'rb') as f:
     gwDischarge_keys, gwDischarge_data = (["GWDischarge"], [sTran.SimRes.q_lin.value])
     
     def export_to_csv(keys, data, name):
-        with open(f"{name}_exported_062921_medMC_newEvap.csv", "w+") as datafile:
+        with open(f"{name}_exported_062921_lower95_top5AICmed.csv", "w+") as datafile:
             datafile.write(",".join(keys) + '\n')
             numpy_stuff = np.asarray(data).T
             for row in numpy_stuff:

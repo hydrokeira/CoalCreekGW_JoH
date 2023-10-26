@@ -145,27 +145,25 @@ radon_UP$Site<-factor(radon_UP$Site, levels = c("UPSTREAM","CC6", "CC7", "CC8", 
 radon_UP$min<-radon_UP$time.corrected.Rn-radon_UP$Uncertainty
 radon_UP$max<-radon_UP$time.corrected.Rn+radon_UP$Uncertainty
 
-radon_UP$loc<-ifelse(radon_UP$Site %in% c("UPSTREAMELK", "COAL15"), "alluvial", "fracture")
+#radon_UP$loc<-ifelse(radon_UP$Site %in% c("UPSTREAMELK", "COAL15"), "alluvial", "fracture")
 
-lines<-c("alluvial"="dashed", "fracture"="solid")
-
-pdf("Radon_Precip_SM_upperCC.pdf", width = 14, height = 7)
+#lines<-c("alluvial"="dashed", "fracture"="solid")
 
 #radon and precip
 p2<-ggplot()+geom_bar(WYprecip, mapping=aes(Date, amount), stat = "identity", fill="grey")+
-  geom_line(radon_UP, mapping=aes(Date, time.corrected.Rn, col=Site, lty=loc), lwd=1)+
+  geom_line(radon_UP, mapping=aes(Date, time.corrected.Rn, col=Site), lwd=1)+
   geom_point(radon_UP, mapping=aes(Date, time.corrected.Rn, col=Site), size=2)+
   scale_y_continuous(sec.axis = sec_axis(trans = ~.*1, name=expression(paste(" "^{222},"Rn (piC/L)"))), 
                      name = "Daily Precipitation (mm)")+theme_classic()+
   geom_errorbar(radon_UP, mapping = aes(x=Date, ymin=min, ymax=max, col=Site, width=0))+
   theme(text = element_text(size = 20, family = "Times"))+scale_color_viridis_d(option = "viridis", direction = -1)+
-  scale_linetype_manual(values = lines)+labs(lty="Associated Feature")
+  labs(tag="a")
 
 p2
 
-tiff("Radon_Isotope_Precip_plot.tiff", units = "in", width = 12, height = 9, res = 300)
+tiff("Radon_Isotope_Precip_plot_Updated101323.tiff", units = "in", width = 12, height = 9, res = 300)
 
-ggarrange(p2, p1, ncol = 1)
+ggarrange(p2, p1, ncol = 1, align = "v")
 
 dev.off()
 
@@ -215,18 +213,6 @@ remove_these_dates<-c(as.Date("2021-09-14"), as.Date("2021-09-28"),
 
 radon_UP_dates<-radon_UP[!(radon_UP$Date %in% remove_these_dates),]
 
-pdf("AllRadon_wNames.pdf", width = 11, height = 5)
-
-ggplot()+
-  geom_line(radon, mapping=aes(Stream.Meter, time.corrected.Rn,col=as.character(Date)))+
-  geom_point(radon, mapping=aes(Stream.Meter, time.corrected.Rn, col=as.character(Date)))+
-  xlab("Stream Meter")+ylab("222Rn (piC/L)")+
-  labs(colour="Date")+scale_x_continuous(trans = "reverse", breaks = pretty_breaks(n=6))+
-  theme(text=element_text(size=20))+
-  geom_text(stream_meter, mapping=aes(x=as.numeric(Stream.Meter), y=y, label=Site),
-            hjust=0, vjust=0, stat = "identity", check_overlap = FALSE, angle=90)+
-  scale_color_manual(values=pal(16))+theme_classic()
-
 pdf("LongTerm_RadonUp_SM.pdf", width = 10, height = 7)
 
 ggplot()+
@@ -248,23 +234,27 @@ stream_meter_UP<-subset(stream_meter, stream_meter$Stream.Meter > 9000)
 
 radon_UP<-radon_UP[radon_UP$Site %in% long_term_sites,]
 
+radon_UP$stream_Distance<-max(radon_UP$Stream.Meter)-radon_UP$Stream.Meter
+
 stream_meter_UP<-stream_meter_UP[stream_meter_UP$Site %in% long_term_sites,]
 
-pdf("LTRadonBoxplot_wNames.pdf", width = 9, height = 5)
+stream_meter_UP$stream_Distance<-max(stream_meter_UP$Stream.Meter)-stream_meter_UP$Stream.Meter
+
+pdf("LTRadonBoxplot_wNames_Updated10132023.pdf", width = 9, height = 5)
 
 ggplot()+
-  geom_boxplot(radon_UP, mapping=aes(Stream.Meter, time.corrected.Rn, group=Site),
+  geom_boxplot(radon_UP, mapping=aes(stream_Distance, time.corrected.Rn, group=Site),
                outlier.shape = NA)+
-  geom_jitter(radon_UP, mapping=aes(Stream.Meter, time.corrected.Rn), size=2, shape=1, col="grey47")+
-  xlab("Stream Meter")+ylab("222Rn (piC/L)")+
+  geom_jitter(radon_UP, mapping=aes(stream_Distance, time.corrected.Rn), size=2, shape=1, col="grey47")+
+  xlab("Stream Distance (m)")+ylab(expression(paste(" "^{222},"Rn (piC/L)")))+
   scale_x_continuous(trans = "reverse", breaks = pretty_breaks(n=6))+
   geom_hline(yintercept = 0, color="light grey")+
-  geom_text(stream_meter_UP, mapping=aes(x=as.numeric(Stream.Meter), y=-3.5, label=Site),
+  geom_text(stream_meter_UP, mapping=aes(x=as.numeric(stream_Distance), y=-3.5, label=Site),
             hjust=.5, vjust=-2.8, stat = "identity", check_overlap = FALSE, angle=45, family="Times")+
             #position = position_jitter(height = 2))+
   #geom_errorbar(radon_UP, mapping = aes(x=Stream.Meter, ymin=min, ymax=max),
                 #width=50)+
-  theme_classic()+theme(text=element_text(size=20, family = "Times"))+xlim(c(12150,9000))
+  theme_classic()+theme(text=element_text(size=20, family = "Times"))+xlim(c(-150, 3000))
 
 dev.off()
 

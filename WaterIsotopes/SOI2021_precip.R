@@ -70,6 +70,10 @@ iso_sums_tot<-merge(iso_sums, iso, by="Date")
 
 iso_sums_tot<-iso_sums_tot[-1,]
 
+iso_sums_tot$precip_type<-ifelse(iso_sums_tot$Date > as.Date("2021-05-07"), "rain", "snow")
+
+write.csv(iso_sums_tot, "Iso_2021_NGWOSPrecip.csv")
+
 #separate out rain and snow for SOI
 rain<-subset(iso_sums_tot, iso_sums_tot$Date > as.Date("2021-05-07"))
 snow<-subset(iso_sums_tot, iso_sums_tot$Date < as.Date("2021-05-07"))
@@ -81,6 +85,7 @@ iso_sums_tot_crop<-bind_rows(rain, snow)
 
 iso_sums_tot_crop$LMWL<-iso_sums_tot_crop$dO*7.4+2.68
 
+write.csv(iso, "Iso_2021_NGWOSPrecip.csv")
 
 #create list of dfs for list
 dfs<-list(iso_sums_tot_crop, rain, snow)
